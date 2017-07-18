@@ -1,21 +1,20 @@
 const express = require('express');
 const path = require('path');
+const mongoClient = require('mongodb').MongoClient;
 
 const app = express();
-app.get('/', function(req, res) {
-   res.sendFile(path.join(__dirname +'/public/index.html'));
-});
 
-app.get('/login', function(req, res){
-  res.sendFile(path.join(__dirname + '/public/login.html'));
-});
+const route = require('./routes/route')
+app.use(route);
 
-app.get('/register', function(req, res){
-  res.sendFile(path.join(__dirname + '/public/register.html'));
-});
-
-app.get('/users', function(req, res){
-  res.sendFile(path.join(__dirname + '/public/users.html'));
+var url = "mongodb://localhost:27017";
+mongoClient.connect(url, function(err, db){
+  if(err){
+    throw err;
+    process.exit(1);
+  } else{
+    console.log('Connected to MongoDB on port @27017');
+  }
 });
 
 const port = 3000;
